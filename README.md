@@ -180,6 +180,30 @@ terraform apply
 terraform destroy
 ```
 
+#### Application Deployment (Azure)
+
+To deploy the application to Azure App Service, follow these steps:
+
+1. Create an Azure App Service Plan:
+
+```bash
+az appservice plan create --name myAppServicePlan --resource-group $TERRAGOAT_RESOURCE_GROUP --location $TF_VAR_region --sku B1 --is-linux
+```
+
+2. Create an Azure App Service:
+
+```bash
+az webapp create --resource-group $TERRAGOAT_RESOURCE_GROUP --plan myAppServicePlan --name myAppService --runtime "NODE|14-lts"
+```
+
+3. Configure the App Service to use a connection string:
+
+```bash
+az webapp config connection-string set --resource-group $TERRAGOAT_RESOURCE_GROUP --name myAppService --settings MyConnectionString="Server=tcp:myserver.database.windows.net,1433;Database=mydatabase;User ID=myuser;Password=mypassword;Encrypt=true;Connection Timeout=30;" --connection-string-type SQLAzure
+```
+
+4. Deploy your application code to the App Service. You can use various methods such as FTP, Git, or Azure DevOps to deploy your code.
+
 ### GCP Setup
 
 #### Installation (GCP)
